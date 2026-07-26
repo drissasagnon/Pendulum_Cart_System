@@ -6,15 +6,15 @@ A = [0 0                                                  1                     
      0 params.m*params.g/params.M                        -params.k1/params.M             -params.k2/(params.M*params.l);
      0 (params.M+params.m)*params.g/(params.M*params.l)  -params.k1/(params.M*params.l)  -(params.M+params.m)*params.k2/(params.M*params.m*(params.l^2))];
 
-B = [0;
-     0;
-     1/(params.M*params.l);
-     (params.M+params.m)/(params.M*params.m*(params.l^2))];
-
 % B = [0;
 %      0;
-%      1/(params.M);
-%      1/(params.M*(params.l))];
+%      1/(params.M*params.l);
+%      (params.M+params.m)/(params.M*params.m*(params.l^2))];
+
+B = [0;
+     0;
+     1/(params.M);
+     1/(params.M*params.l)];
 
 if output == "q1"
     C = [1, 0, 0, 0];
