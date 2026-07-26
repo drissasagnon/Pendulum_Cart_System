@@ -73,8 +73,8 @@ function animate_pendulum_cart(t, q1, q2, u,params, varargin)
     ax3 = subplot(2,2,3); hold(ax3,'on'); grid(ax3,'on');
     xlim(ax3, [tUniform(1) tUniform(end)]);
     ylim(ax3, [min(uU) max(uU)] + [-0.1 0.1]);
-    ylabel(ax3,'u [N.m]'); xlabel(ax3,'Time [s]');
-    u_line = animatedline(ax3, 'Color','g');
+    ylabel(ax3,'q_2 [rad]'); xlabel(ax3,'Time [s]');
+    u_line = animatedline(ax3, 'Color','r');
     %% Video writer
     saveVideo = ~isempty(videoName);
     if saveVideo
@@ -96,7 +96,7 @@ function animate_pendulum_cart(t, q1, q2, u,params, varargin)
         set(rodLine, 'XData',[x_cart, x_pendulum], 'YData',[CartRadius, y_pendulum]);
         set(massMarker, 'XData', x_pendulum, 'YData', y_pendulum);
         set(refLine, 'XData',[x_cart, x_cart], 'YData',[CartRadius, CartRadius+l]);
-        addpoints(u_line, tUniform(k), uU(k));
+        addpoints(u_line, tUniform(k), )
         addpoints(q1_line, tUniform(k), x_cart);   % accumule, ne remplace pas
         addpoints(q2_line, tUniform(k), theta);
 
