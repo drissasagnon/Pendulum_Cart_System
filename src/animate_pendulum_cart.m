@@ -34,7 +34,7 @@ function animate_pendulum_cart(t, q1, q2, u, params, varargin)
     videoName = p.Results.VideoName;
     fps       = p.Results.FPS;
     q1_ref    = p.Results.q1_ref;
-    q2_ref    = p.Results.q2_ref;
+    q2_ref    = rad2deg(p.Results.q2_ref);
     showLive  = p.Results.ShowLive;
 
     l = params.l;
@@ -43,7 +43,7 @@ function animate_pendulum_cart(t, q1, q2, u, params, varargin)
     %% Resample
     tUniform = (t(1):1/fps:t(end))';
     q1U      = interp1(t,q1,tUniform);
-    q2U      = interp1(t,q2,tUniform);
+    q2U      = interp1(t,rad2deg(q2),tUniform);
     uU       = interp1(t,u,tUniform);
 
     ref1 = false;
@@ -125,7 +125,7 @@ function animate_pendulum_cart(t, q1, q2, u, params, varargin)
     ax4 = subplot(2,2,4); hold(ax4,'on'); grid(ax4,'on');
     xlim(ax4, [tUniform(1) tUniform(end)]);
     ylim(ax4, [min(q2U) max(q2U)] + [-0.1 0.1]);
-    ylabel(ax4,'q_2 [rad]'); xlabel(ax4,'Time [s]');
+    ylabel(ax4,'q_2 [°]'); xlabel(ax4,'Time [s]');
     q2_line = animatedline(ax4, 'Color','r');
     if ref2
         q2_ref_line = animatedline(ax4, 'Color','g');
