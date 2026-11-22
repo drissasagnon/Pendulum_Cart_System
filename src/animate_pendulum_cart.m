@@ -40,11 +40,28 @@ function animate_pendulum_cart(t, q1, q2, u, params, varargin)
     l = params.l;
     CartRadius = params.CartRadius;   % also used as the wheel radius R
 
-    %% Resample
+    %% Check and resample inputs
+    t  = t(:);
+    q1 = reshape(q1, [], 1);  q2 = reshape(q2, [], 1);  u = reshape(u, [], 1);
+    if isscalar(u), u = u*ones(size(t)); end          % constant input, e.g. open loop
+    if any([numel(q1) numel(q2) numel(u)] ~= numel(t))
+        error('animate_pendulum_cart:size', ...
+            'Signals must have the same length as t (t:%d, q1:%d, q2:%d, u:%d).', ...
+            numel(t), numel(q1), numel(q2), numel(u));
+    end
+    [t, iu] = unique(t);                               % Simulink can repeat time points
+    q1 = q1(iu);  q2 = q2(iu);  u = u(iu);
+    if numel(t) < 2
+        error('animate_pendulum_cart:time', 'Need at least two time samples.');
+    end
+
     tUniform = (t(1):1/fps:t(end))';
-    q1U      = interp1(t,q1,tUniform);
-    q2U      = interp1(t,rad2deg(q2),tUniform);% interp1(t,rad2deg(q2),tUniform);
-    uU       = interp1(t,u,tUniform);
+    q1U      = interp1(t, q1, tUniform);
+    q2U      = interp1(t, rad2deg(q2), tUniform);
+    uU       = interp1(t, u, tUniform);
+
+    
+
 
     ref1 = false;
     ref2 = false;
@@ -86,7 +103,7 @@ function animate_pendulum_cart(t, q1, q2, u, params, varargin)
     if saveVideo && ~showLive
         fig.Visible = 'off';   % skip screen compositing when only exporting
     end
-    set(fig, 'GraphicsSmoothing', 'off');
+    % set(fig, 'GraphicsSmoothing', 'off');
 
     % --- panneau animation (gauche) ---
     ax = subplot(2,2,1); hold(ax,'on'); grid(ax,'on'); axis(ax,'equal');

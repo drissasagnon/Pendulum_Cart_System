@@ -1,53 +1,52 @@
-<a id="TMP_5ab0"></a>
-<a id="TMP_7499"></a>
+<a id="TMP_2b2e"></a>
+<a id="TMP_018b"></a>
 
 # Pendulum cart control
 
-A mass $m$ is attached to a car of mass $M$ through a mass\-less junction with a length $l$ . The car displacement is induced by a force u.  
+the system consists of a cart of mass $M$ carrying a pendulum of mass $m$ through a mass\-less rod with a length $l$ . The cart displacement is driven by a horizontal force u.  
 
 ![image_0.png](./main_media/image_0.png)
 
-The goal of the system is to stabilize the mass mp vertically, keeping the swing angle q2 = 0 by controlling the displacement q1 of the car. 
+The goal of the system is to stabilize the pendulum upright, keeping the swing angle q2 = 0 by controlling the displacement q1 of the car. 
 
 <!-- Begin Toc -->
 
 ## Table of Contents
-&#8195;&#8195;[1. Model of the system](#TMP_108c)
+&#8195;&#8195;[1. Model of the system](#TMP_581a)
  
-&#8195;&#8195;[2. Model linearization](#TMP_3609)
+&#8195;&#8195;[2. Model linearization](#TMP_0cd0)
  
-&#8195;&#8195;[3. Simulink Model of the system](#TMP_0ddc)
+&#8195;&#8195;[3. Simulink Model of the system](#TMP_7943)
  
-&#8195;&#8195;[4. System analysis](#TMP_58bc)
+&#8195;&#8195;[4. System analysis](#TMP_843b)
  
-&#8195;&#8195;&#8195;[Stability](#TMP_2052)
+&#8195;&#8195;&#8195;[Stability](#TMP_1d3f)
  
-&#8195;&#8195;&#8195;[Controllability and observability](#TMP_81e6)
+&#8195;&#8195;&#8195;[Controllability and observability](#TMP_58cc)
  
-&#8195;&#8195;[5.Control](#TMP_0f08)
+&#8195;&#8195;[5.Control](#TMP_1792)
  
-&#8195;&#8195;&#8195;[Loop shaping with PID controller](#TMP_901e)
+&#8195;&#8195;&#8195;[Loop shaping with PID controller](#TMP_0ed9)
  
-&#8195;&#8195;&#8195;[State feedback control](#TMP_8caa)
+&#8195;&#8195;&#8195;[State feedback control](#TMP_3f46)
  
-&#8195;&#8195;&#8195;[State feedback controller with cart position (q\_1) as output](#TMP_8e6f)
+&#8195;&#8195;&#8195;[State feedback controller with cart position (q\_1) as output](#TMP_24d4)
  
-&#8195;&#8195;&#8195;[State feedback controller with swing angle (q\_2) as output](#TMP_6fd3)
+&#8195;&#8195;&#8195;[State feedback controller with swing angle (q\_2) as output](#TMP_5939)
  
-&#8195;&#8195;&#8195;[LQR state feedback control](#TMP_16c6)
+&#8195;&#8195;&#8195;[LQR state feedback control](#TMP_15e5)
  
-&#8195;&#8195;&#8195;[Observer based state feedback control](#TMP_506c)
+&#8195;&#8195;&#8195;[Observer based state feedback control](#TMP_7c39)
  
-&#8195;&#8195;&#8195;[LQR State feedback with integrale action](#TMP_9f92)
+&#8195;&#8195;&#8195;[LQR State feedback with integrale action](#TMP_1741)
  
-&#8195;&#8195;&#8195;[Sliding mode control](#TMP_9790)
+&#8195;&#8195;&#8195;[Sliding mode control](#TMP_1223)
  
-&#8195;&#8195;&#8195;[RST control](#TMP_2c85)
+&#8195;&#8195;&#8195;[RST control](#TMP_85e0)
  
 <!-- End Toc -->
-  
 
-<a id="TMP_108c"></a>
+<a id="TMP_581a"></a>
 
 ## 1. Model of the system
 
@@ -67,7 +66,7 @@ The kinetic energy of the system is given as
 
 The potential energy of the system is produce only by the mass m as the mass M is already grounded. So we have
 
- $$ V=\mathrm{mgLcos}\left(q_2 \right)\; $$ 
+ $$ V=\mathrm{m}\mathrm{g}\mathrm{L}\mathrm{c}\mathrm{o}\mathrm{s}\left(q_2 \right)\; $$ 
 
 From the about energies equation, we obtain the Lagrangian
 
@@ -105,7 +104,7 @@ The model of the system is given as
 
  $$ \left\lbrace \begin{array}{ll} \;\left(M+m\right)\ddot{\;q_1 } -m\;l\ddot{\;q_2 } \;\cos \left(q_2 \right)+m\;l\;{\dot{q_2 } }^2 \;\sin \left(q_2 \right)+k_1 \;\dot{\;q_1 }  & =u\newline -m\;l\;\ddot{\;q_1 } \;\cos \left(q_2 \right)+m\;l^{2\;} \ddot{\;q_2 } -m\;g\;l\;\sin \left(q_2 \right)+k_2 \;\dot{\;q_2 } \; & =0 \end{array}\right. $$ 
 
-<a id="TMP_3609"></a>
+<a id="TMP_0cd0"></a>
 
 ## 2. Model linearization
 
@@ -131,7 +130,7 @@ The model of the system is given as
 
  $$ \left\lbrack \begin{array}{c} \dot{\;q_1 } \newline \dot{\;q_2 } \newline \ddot{\;q_1 } \newline \ddot{\;q_2 }  \end{array}\right\rbrack =\left\lbrack \begin{array}{cccc} 0 & 0 & 1 & 0\newline 0 & 0 & 0 & 1\newline 0 & \frac{\;m\;g}{M\;} & -\frac{\;k_1 }{M} & -\frac{\;k_2 }{M\;l}\newline 0 & \frac{\;\left(M+m\right)g}{M\;l} & -\frac{\;k_1 }{M\;l} & -\frac{\left(M+m\right)\;k_2 }{M\;m\;l^2 } \end{array}\right\rbrack \left\lbrack \begin{array}{c} q_1 \newline q_2 \newline \dot{\;q_1 } \newline \dot{\;q_2 }  \end{array}\right\rbrack +\left\lbrack \begin{array}{c} 0\newline 0\newline \frac{\;1}{M\;}\newline \frac{1}{M\;l} \end{array}\right\rbrack u $$ 
 
-<a id="TMP_0ddc"></a>
+<a id="TMP_7943"></a>
 
 ## 3. Simulink Model of the system
 
@@ -193,13 +192,13 @@ Model Properties
 
 ![image_2.png](./main_media/image_2.png)
 
-<a id="TMP_58bc"></a>
+<a id="TMP_843b"></a>
 
 ## 4. System analysis
-<a id="TMP_6bf9"></a>
+<a id="TMP_8c22"></a>
  
 
-<a id="TMP_2052"></a>
+<a id="TMP_1d3f"></a>
 
 ### Stability
 
@@ -240,7 +239,7 @@ The system is unstable because the second pole of the system is a real positive.
 
 The only one zero of the system is negative making the system minimum phase.
 
-<a id="TMP_5087"></a>
+<a id="TMP_5c8b"></a>
 ```matlab
 
 
@@ -257,8 +256,8 @@ From the root locus we can conclude that a finite P controller only cannot stabi
 
 Thus a solution of control is to design a controller that take into account integral, derivative and proportional effects through loop shaping. 
 
-<a id="TMP_3195"></a>
-<a id="TMP_81e6"></a>
+<a id="TMP_6ef6"></a>
+<a id="TMP_58cc"></a>
 
 ### Controllability and observability
 
@@ -271,10 +270,26 @@ Qc = ctrb(plant_ss);
 
 
 rc = rank(Qc)
+```
+
+```matlabTextOutput
+rc = 4
+```
+
+```matlab
 ro_q1 = rank(obsv(plant_ss_q1))
+```
+
+```matlabTextOutput
+ro_q1 = 4
+```
+
+```matlab
 ro_q2 = rank(obsv(plant_ss_q2))
+```
 
-
+```matlabTextOutput
+ro_q2 = 3
 ```
 
 The system is controllable as the rank of the controllability matrix is equal to the dimension of the A. 
@@ -285,53 +300,7 @@ The system is controllable as the rank of the controllability matrix is equal to
 plant_ss_diag = diagonalize(plant_ss)
 ```
 
-By diagonalizing the LTI model, we can directly see that all the state are controllable as B matrix is full. 
-
-<a id="TMP_0f08"></a>
-
-## 5.Control 
-<a id="TMP_901e"></a>
-
-### Loop shaping with PID controller
-
-In this section simulink Control System Designer tool is used to tune a PID controller that stabilize the pendulum. 
-
-![image_3.png](./main_media/image_3.png)
-
-For the simulation $q_{20} =10°$ 
-
-```matlab
-Tsim = 10;
-q20 = 10; 
-Ts = 1e-3;
-q2_f = deg2rad(-10);
-IC = [0,deg2rad(10),0,0];
-model = 1; % 1 : linear model       2: linear model diagonalized        3: non linear model
-[plant_ss] = syst_repr_generator(params,'q2');
-input_select = plant_ss.C(1:2);
-sim("models/mdl_with_PID.slx");
-refs = {'q1_ref', 'q2_ref'};
-n = 1; 
-figure(n);
-animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(find(input_select==1))), ref.Data*input_select')
-```
-
 ```matlabTextOutput
-Warning: The GraphicsSmoothing property will be removed. All graphics are smooth regardless of the property value.
-```
-
-![figure_2.png](./main_media/figure_2.png)
-
-<a id="TMP_8caa"></a>
-
-### State feedback control
-
-This control law is expressed as $u=-Kx+k_{\mathrm{s}\mathrm{c}\mathrm{a}\mathrm{l}\mathrm{e}} \;y_{\mathrm{r}\mathrm{e}\mathrm{f}}$ 
-
-```matlabTextOutput
-rc = 4
-ro_q1 = 4
-ro_q2 = 3
 plant_ss_diag = 
   A = 
            x1      x2      x3      x4
@@ -359,9 +328,94 @@ Continuous-time state-space model.
 Model Properties
 ```
 
+By diagonalizing the LTI model, we can directly see that all the state are controllable as B matrix is full. 
+
+<a id="TMP_1792"></a>
+
+## 5.Control 
+<a id="TMP_0ed9"></a>
+
+### Loop shaping with PID controller
+
+In this section simulink Control System Designer tool is used to tune a PID controller that stabilize the pendulum. 
+
+![image_3.png](./main_media/image_3.png)
+
+For the simulation $q_{20} =10°$ 
+
+```matlab
+Tsim = 10;
+Ts = 1e-4;
+q2_f = deg2rad(-10);
+params.IC = [0,deg2rad(1),0,0];
+model = 2; % 1 : linear model,   2: non linear model  , 3: Matlab fct non linear model
+[plant_ss] = syst_repr_generator(params,'q2');
+input_select = plant_ss.C(1:2);
+sim("models/mdl_with_PID.slx");
+```
+
+```matlabTextOutput
+Warning: Model 'mdl_with_PID' contains 1 algebraic loops. 
+Suggested Actions:
+    • Highlight and view information about the algebraic loops in the model using the Simulink.BlockDiagram.getAlgebraicLoops function. - Open
+    • Suppress this diagnostic by setting the 'Algebraic Loop' diagnostic parameter to 'none'. - Fix
+
+
+Found algebraic loop that contains: 
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum7
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum8
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Gain12
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Gain13
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Divide3
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum9
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum10
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Gain8
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Divide
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Gain9
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum (algebraic variable)
+```
+
+```matlab
+refs = {'q1_ref', 'q2_ref'};
+n = 1; 
+figure(n);
+animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(input_select==1)), ref.Data*input_select')
+```
+
+![figure_2.png](./main_media/figure_2.png)
+
+By using simulink blocks to model the non\-linear system, we encounter algebraic loops because ${\ddot{q} }_1$ requires  ${\ddot{q} }_2$ and vice\-versa. To solve that, we will use Matlab function block, to solve the following ode. 
+
+ $$ \left\lbrace \begin{array}{ll} \;\left(M+m\right)\ddot{\;q_1 } -m\;l\ddot{\;q_2 } \;\cos \left(q_2 \right)+m\;l\;{\dot{q_2 } }^2 \;\sin \left(q_2 \right)+k_1 \;\dot{\;q_1 }  & =u\newline -m\;l\;\ddot{\;q_1 } \;\cos \left(q_2 \right)+m\;l^{2\;} \ddot{\;q_2 } -m\;g\;l\;\sin \left(q_2 \right)+k_2 \;\dot{\;q_2 } \; & =0 \end{array}\;\;\;\;\;=\Rightarrow \left\lbrace \begin{array}{ll} \;\left(M+m\right)\ddot{\;q_1 } -m\;l\ddot{\;q_2 } \;\cos \left(q_2 \right) & =u-m\;l\;{\dot{q_2 } }^2 \;\sin \left(q_2 \right)-k_1 \;\dot{\;q_1 } \newline -m\;l\;\ddot{\;q_1 } \;\cos \left(q_2 \right)+m\;l^{2\;} \ddot{\;q_2 } \; & =m\;g\;l\;\sin \left(q_2 \right)-k_2 \;\dot{\;q_2 }  \end{array}\;\;\;\;\;\;\right.\right. $$ 
+
+ $$ \left\lbrack \begin{array}{c} \ddot{\;q_1 } \newline \ddot{\;q_2 }  \end{array}\right\rbrack ={\left\lbrack \begin{array}{cccc} \left(M+m\right) & -m\;l\;\cos \left(q_2 \right)\newline -m\;l\;\cos \left(q_2 \right) & m\;l^{2\;}  \end{array}\right\rbrack }^{-1} \;\left\lbrack \begin{array}{c} \dot{\;u-m\;l\;{\dot{q_2 } }^2 \;\sin \left(q_2 \right)-k_1 \;\dot{\;q_1 } } \newline \dot{\;m\;g\;l\;\sin \left(q_2 \right)-k_2 \;\dot{\;q_2 } }  \end{array}\right\rbrack $$ 
+
+```matlab
+Tsim = 10;
+Ts = 1e-4;
+q2_f = deg2rad(-10);
+params.IC = [0,deg2rad(1),0,0];
+model = 3; % 1 : linear model,   2: non linear model  , 3: Matlab fct non linear model
+[plant_ss] = syst_repr_generator(params,'q2');
+input_select = plant_ss.C(1:2);
+sim("models/mdl_with_PID.slx");
+refs = {'q1_ref', 'q2_ref'};
+clf("reset")
+figure
+animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(input_select==1)), ref.Data*input_select')
+```
+
+![figure_3.png](./main_media/figure_3.png)
+
+<a id="TMP_3f46"></a>
+
+### State feedback control
+
+This control law is expressed as $u=-Kx+k_{\mathrm{s}\mathrm{c}\mathrm{a}\mathrm{l}\mathrm{e}} \;y_{\mathrm{r}\mathrm{e}\mathrm{f}}$ 
+
 Classical state feedback controller is only applicable to SISO system, so we have to choose one of the two possible outputs
 
-<a id="TMP_8e6f"></a>
+<a id="TMP_24d4"></a>
 ### State feedback controller with cart position (q\_1) as output 
 
 By default we will set $k_{\mathrm{s}\mathrm{c}\mathrm{a}\mathrm{l}\mathrm{e}} =1$ 
@@ -372,26 +426,31 @@ poles_des = [-3, -3, -3, -3];
 rank(plant_ss.B);
 K = acker(plant_ss.A,plant_ss.B, poles_des);
 Tsim = 20;
-Ts = 1e-3;
+Ts = 1e-4;
 q2_f = deg2rad(10);
 IC = [0,deg2rad(20),0,0];
-model = 1; % 1 : linear model       2: linear model diagonalized        3: non linear model
+model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 k_scale = 1;
 input_select = plant_ss.C(1:2);
 refs = {'q1_ref', 'q2_ref'};
 sim('models/mdl_with_State_Feedback.slx');
-n = 1;
-n = n+1;
-clf(gcf)
-figure(n);
-animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(find(input_select==1))), ref.Data*input_select')
+
+
+clf("reset")
+figure;
+X = squeeze(x.Data);              
+if size(X,1) == 4, X = X.'; end  
+animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
+    string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-```matlabTextOutput
-Warning: The GraphicsSmoothing property will be removed. All graphics are smooth regardless of the property value.
-```
+![figure_4.png](./main_media/figure_4.png)
 
-![figure_3.png](./main_media/figure_3.png)
+```matlab
+%animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(input_select==1)), ref.Data*input_select')
+
+
+```
 
 With the compensator $k_{\mathrm{scale}}$ set to default 1, a state feedback controller cannot assure a null static error.
 
@@ -418,12 +477,12 @@ figure
 step(toy_system)
 ```
 
-![figure_4.png](./main_media/figure_4.png)
+![figure_5.png](./main_media/figure_5.png)
 
 ```matlab
 figure
 clf(gcf)
-dcg = dcgain(systs)
+dcg = dcgain(toy_system)
 ```
 
 ```matlabTextOutput
@@ -439,10 +498,10 @@ compensator = 2
 ```
 
 ```matlab
-step(compensator*systs)
+step(compensator*toy_system)
 ```
 
-![figure_5.png](./main_media/figure_5.png)
+![figure_6.png](./main_media/figure_6.png)
 
 By default we will set $k_{\mathrm{s}\mathrm{c}\mathrm{a}\mathrm{l}\mathrm{e}} =\frac{1}{\mathrm{d}\mathrm{c}\mathrm{g}\mathrm{a}\mathrm{i}\mathrm{n}\left(\mathrm{c}\mathrm{l}\mathrm{o}\mathrm{s}\mathrm{e}\mathrm{d}\;\mathrm{l}\mathrm{o}\mathrm{o}\mathrm{p}\right)}$ 
 
@@ -454,8 +513,8 @@ K = acker(plant_ss.A,plant_ss.B, poles_des);
 Tsim = 20;
 Ts = 1e-4;
 q2_f = deg2rad(20);
-IC = [0,deg2rad(20),0,0];
-model = 1; % 1 : linear model       2: linear model diagonalized        3: non linear model
+params.IC = [0,deg2rad(20),0,0];
+model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 
 
 A_cl = plant_ss.A - plant_ss.B*K;
@@ -483,42 +542,36 @@ refs = {'q1_ref', 'q2_ref'};
 
 
 sim('models/mdl_with_State_Feedback.slx');
-clf(gcf);
-n = n+1; 
+clf("reset")
 figure;
-animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(find(input_select==1))), ref.Data*input_select')
+X = squeeze(x.Data);              
+if size(X,1) == 4, X = X.'; end  
+animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
+    string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-```matlabTextOutput
-Warning: The GraphicsSmoothing property will be removed. All graphics are smooth regardless of the property value.
-```
-
-![figure_6.png](./main_media/figure_6.png)
+![figure_7.png](./main_media/figure_7.png)
 
 ```matlab
 Tsim = 10;
 Ts = 1e-4;
 q2_f = deg2rad(20);
 IC = [0,deg2rad(20),0,0];
-model = 1; % 1 : linear model       2: linear model diagonalized        3: non linear model
+model = 3; % 1 : linear model       2: non linear model
 input_select = plant_ss.C(1:2);
 sim('models/mdl_with_State_Feedback.slx');
-
-
 refs = {'q1_ref', 'q2_ref'};
-n = n+1; 
-clf(gcf)
-figure(n);
-animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(find(input_select==1))), ref.Data*input_select')
+clf("reset")
+figure;
+X = squeeze(x.Data);              
+if size(X,1) == 4, X = X.'; end  
+animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
+    string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-```matlabTextOutput
-Warning: The GraphicsSmoothing property will be removed. All graphics are smooth regardless of the property value.
-```
+![figure_8.png](./main_media/figure_8.png)
 
-![figure_7.png](./main_media/figure_7.png)
-
-<a id="TMP_6fd3"></a>
+<a id="TMP_5939"></a>
 ### State feedback controller with swing angle (q\_2) as output 
 
 Taking $q_2$ as output of the system reveals one of the implication of non observability show above. Actually, state feedback control only changes system's poles (the denominator of the the transfer function). Looking closely to the transfer function's numerator when $q_2$ is the output, we notice that $b_0 =-1\ldotp 866e-16\approx 0$, which result in $\mathrm{dcgain}=\frac{b_0 }{a_0 }\;$ being null and an infinite compensator $k_{\mathrm{scale}} =\infty$ 
@@ -532,7 +585,7 @@ Tsim = 20;
 Ts = 1e-4;
 q2_f = deg2rad(20);
 IC = [0,deg2rad(20),0,0];
-model = 1; % 1 : linear model       2: linear model diagonalized        3: non linear model
+model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 
 
 A_cl = plant_ss.A - plant_ss.B*K;
@@ -568,7 +621,7 @@ k_scale = 1/dcg
 k_scale = Inf
 ```
 
-<a id="TMP_16c6"></a>
+<a id="TMP_15e5"></a>
 
 ### LQR state feedback control
 
@@ -588,26 +641,24 @@ Tsim = 20;
 Ts = 1e-4;
 q2_f = deg2rad(10);
 IC = [0,deg2rad(10),0,0];
-model = 3; % 1 : linear model       2: linear model diagonalized        3: non linear model
+model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 
 
 input_select = plant_ss.C(1:2);
 sim('models/mdl_with_State_Feedback.slx');
 refs = {'q1_ref', 'q2_ref'};
-n = n+1; 
-clf(gcf)
-figure(n);
-animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(find(input_select==1))), ref.Data*input_select')
+clf("reset")
+figure;
+X = squeeze(x.Data);              
+if size(X,1) == 4, X = X.'; end  
+animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
+    string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-```matlabTextOutput
-Warning: The GraphicsSmoothing property will be removed. All graphics are smooth regardless of the property value.
-```
+![figure_9.png](./main_media/figure_9.png)
 
-![figure_8.png](./main_media/figure_8.png)
-
-<a id="TMP_4823"></a>
-<a id="TMP_506c"></a>
+<a id="TMP_9622"></a>
+<a id="TMP_7c39"></a>
 
 ### Observer based state feedback control
 
@@ -629,10 +680,10 @@ poles_des = [-3, -3, -3, -3];
 rank(plant_ss.B);
 K = acker(plant_ss.A,plant_ss.B, poles_des);
 Tsim = 20;
-Ts = 1e-4;
+Ts = 1e-5;
 q2_f = deg2rad(20);
 IC = [0,deg2rad(20),0,0];
-model = 1; % 1 : linear model       2: linear model diagonalized        3: non linear model
+model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 
 
 A_cl = plant_ss.A - plant_ss.B*K;
@@ -644,21 +695,19 @@ dcg = dcgain(closed_loop);
 k_scale = 1/dcg;
 input_select = plant_ss.C(1:2);
 refs = {'q1_ref', 'q2_ref'};
-model = 1;
+model = 1;  % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 sim('models/mdl_with_State_Feedback_and_observer.slx');
-clf(gcf);
-n = n+1; 
-figure(n);
-animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(find(input_select==1))), ref.Data*input_select')
+clf("reset")
+figure;
+X = squeeze(x.Data);              
+if size(X,1) == 4, X = X.'; end  
+animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
+    string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-```matlabTextOutput
-Warning: The GraphicsSmoothing property will be removed. All graphics are smooth regardless of the property value.
-```
+![figure_10.png](./main_media/figure_10.png)
 
-![figure_9.png](./main_media/figure_9.png)
-
-<a id="TMP_9f92"></a>
+<a id="TMP_1741"></a>
 
 ### LQR State feedback with integrale action
 
@@ -733,22 +782,21 @@ ans = 5x1 complex
 Tsim = 20;
 Ts = 1e-4;
 IC = [0,deg2rad(1),0,0];
-model = 1; % 1: linear model       2: linear model diagonalized        3: non linear model
+model = 3; % 1: linear model       2: non linear model    3: Matlab fct non linear model
 input_select = [0,1];
 q2_f = deg2rad(10);
 sim('models/mdl_with_State_Feedback_integrale.slx')
-clf(gcf)
-figure
-animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(find(input_select==1))), ref.Data*input_select')
+clf("reset")
+figure;
+X = squeeze(x.Data);              
+if size(X,1) == 4, X = X.'; end  
+animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
+    string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-```matlabTextOutput
-Warning: The GraphicsSmoothing property will be removed. All graphics are smooth regardless of the property value.
-```
+![figure_11.png](./main_media/figure_11.png)
 
-![figure_10.png](./main_media/figure_10.png)
-
-<a id="TMP_9790"></a>
+<a id="TMP_1223"></a>
 
 ### Sliding mode control
 
@@ -774,25 +822,22 @@ r = q1_ref/alpha;
 input_select = plant_ss.C(1:2);
 Tsim = 20;
 Ts=1e-4;
-model = 1; % 1 : linear model       2: linear model diagonalized        3: non linear model
+model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 sim('models/mdl_with_SMC.slx');
 refs = {'q1_ref', 'q2_ref'};
 
 
-clf(gcf)
-figure
-animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 30, string(refs(find(input_select==1))), ref.Data*input_select')%, 'VideoName', "output_smc_tanh_Linear_mdl.mp4")
+clf("reset")
+figure;
+X = squeeze(x.Data);              
+if size(X,1) == 4, X = X.'; end  
+animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
+    string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-```matlabTextOutput
-Warning: The GraphicsSmoothing property will be removed. All graphics are smooth regardless of the property value.
-```
-
-![figure_11.png](./main_media/figure_11.png)
+![figure_12.png](./main_media/figure_12.png)
 
 ```matlab
-
-
 run parameters.m
 [plant_ss]  = syst_repr_generator(params,'q1');
 Qc = ctrb(plant_ss.A,plant_ss.B);
@@ -812,23 +857,20 @@ r = q1_ref/alpha;
 input_select = plant_ss.C(1:2);
 Tsim = 20;
 Ts=1e-4;
-model = 3; % 1 : linear model       2: linear model diagonalized        3: non linear model
+model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 sim('models/mdl_with_SMC.slx');
 refs = {'q1_ref', 'q2_ref'};
-
-
-clf(gcf)
-figure
-animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 30, string(refs(find(input_select==1))), ref.Data*input_select') %, 'VideoName', "output_smc_tanh_NLinear_mdl.mp4")
+clf("reset")
+figure;
+X = squeeze(x.Data);              
+if size(X,1) == 4, X = X.'; end  
+animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
+    string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-```matlabTextOutput
-Warning: The GraphicsSmoothing property will be removed. All graphics are smooth regardless of the property value.
-```
+![figure_13.png](./main_media/figure_13.png)
 
-![figure_12.png](./main_media/figure_12.png)
-
-<a id="TMP_2c85"></a>
+<a id="TMP_85e0"></a>
 
 ### RST control
 

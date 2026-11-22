@@ -6,6 +6,7 @@ params.l = 1;   % Pendulum rod
 params.k1 = 0.01; % Cart friction coefficient
 params.k2 = 0.01; % Pendulum friction coefficient
 params.CartRadius = 0.3; % Cart wheel radius
+params.IC = [0, deg2rad(0.5), 0, 0]; % Initial conditions
 
 
 
