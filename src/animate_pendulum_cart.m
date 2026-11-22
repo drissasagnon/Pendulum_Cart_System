@@ -7,7 +7,7 @@ function animate_pendulum_cart(t, q1, q2, u, params, varargin)
 %               "To Workspace" block)
 %     q1      : cart displacement q1(t), same length as t   [m]
 %     q2      : pendulum angle q2(t), same length as t      [rad]
-%     u       : control input u(t), same length as t        [N.m]
+%     u       : control input u(t), same length as t        [N]
 %     params  : struct with fields l (arm length), CartRadius (= wheel
 %               radius R, used both for drawing and for the rolling
 %               constraint phi = q1/R)
@@ -153,7 +153,7 @@ function animate_pendulum_cart(t, q1, q2, u, params, varargin)
     ax3 = subplot(2,2,3); hold(ax3,'on'); grid(ax3,'on');
     xlim(ax3, [tUniform(1) tUniform(end)]);
     ylim(ax3, [min(uU) max(uU)] + [-0.1 0.1]);
-    ylabel(ax3,'u [N.m]'); xlabel(ax3,'Time [s]');
+    ylabel(ax3,'u [N]'); xlabel(ax3,'Time [s]');
     u_line = animatedline(ax3, 'Color','g');
 
     % Strip interactive chrome (toolbar/hit-testing) — cheap, avoids
