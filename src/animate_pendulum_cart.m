@@ -43,7 +43,7 @@ function animate_pendulum_cart(t, q1, q2, u, params, varargin)
     %% Resample
     tUniform = (t(1):1/fps:t(end))';
     q1U      = interp1(t,q1,tUniform);
-    q2U      = interp1(t,rad2deg(q2),tUniform);
+    q2U      = interp1(t,rad2deg(q2),tUniform);% interp1(t,rad2deg(q2),tUniform);
     uU       = interp1(t,u,tUniform);
 
     ref1 = false;
@@ -60,8 +60,8 @@ function animate_pendulum_cart(t, q1, q2, u, params, varargin)
     saveVideo = ~isempty(videoName);
 
     % Precompute per-frame kinematics once (avoid recomputing in loop)
-    x_pendulumU = q1U - l*sin(q2U);
-    y_pendulumU = CartRadius + l*cos(q2U);
+    x_pendulumU = q1U - l*sin(deg2rad(q2U));
+    y_pendulumU = CartRadius + l*cos(deg2rad(q2U));
 
     % NEW: precompute 3 wheel spokes (120 deg apart), rolling without slipping.
     % All 3 spokes share one line handle, using NaN to break the path into

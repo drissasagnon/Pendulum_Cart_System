@@ -24,8 +24,9 @@ end
 D = 0;
 
 plant_ss = ss(A,B,C,D);
-plant_tf = ss2tf(A,B,C,D);
+[b,a] = ss2tf(A,B,C,D);
 plant_zpk = zpk(plant_ss);
+plant_tf = tf(b,a);
 
 
 end

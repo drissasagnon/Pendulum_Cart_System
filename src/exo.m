@@ -1,3 +1,26 @@
+%%
+% 
+% * $ $ITEM1
+% * ITEM2$ $ 
+% 
+% 
+% $$e^{\pi i} + 1 = 0$$
+% 
+% <<FILENAME.PNG>>
+%% SECTION TITLE
+% 
+%   for x = 1:10
+% 
+%  PREFORMATTED
+%  TEXT
+% 
+%       disp(x)
+%   end
+% 
+% DESCRIPTIVE TEXT
+% 
+% 
+
 fig = figure;
 ax = axes(fig);                          % create axes FIRST
 hold(ax, 'on');
