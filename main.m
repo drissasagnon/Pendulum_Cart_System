@@ -163,7 +163,7 @@ K = acker(plant_ss.A,plant_ss.B, poles_des);
 Tsim = 20;
 Ts = 1e-4;
 q2_f = deg2rad(10);
-IC = [0,deg2rad(20),0,0];
+params.IC = [0,deg2rad(20),0,0];
 model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 k_scale = 1;
 input_select = plant_ss.C(1:2);
@@ -226,7 +226,7 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ... %[
 Tsim = 10;
 Ts = 1e-4;
 q2_f = deg2rad(20);
-IC = [0,deg2rad(20),0,0];
+params.IC = [0,deg2rad(20),0,0];
 model = 3; % 1 : linear model       2: non linear model
 input_select = plant_ss.C(1:2);
 sim('models/mdl_with_State_Feedback.slx');
@@ -247,7 +247,7 @@ K = acker(plant_ss.A,plant_ss.B, poles_des);
 Tsim = 20;
 Ts = 1e-4;
 q2_f = deg2rad(20);
-IC = [0,deg2rad(20),0,0];
+params.IC = [0,deg2rad(20),0,0];
 model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 
 A_cl = plant_ss.A - plant_ss.B*K;
@@ -273,7 +273,7 @@ k_scale = 1/dcg;
 Tsim = 20;
 Ts = 1e-4;
 q2_f = deg2rad(10);
-IC = [0,deg2rad(10),0,0];
+params.IC = [0,deg2rad(10),0,0];
 model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 
 input_select = plant_ss.C(1:2);
@@ -302,7 +302,7 @@ K = acker(plant_ss.A,plant_ss.B, poles_des);
 Tsim = 20;
 Ts = 1e-5;
 q2_f = deg2rad(20);
-IC = [0,deg2rad(20),0,0];
+params.IC = [0,deg2rad(20),0,0];
 model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 
 A_cl = plant_ss.A - plant_ss.B*K;
@@ -340,7 +340,7 @@ pole(ss_cl) %[output:5d7f3d1f]
 
 Tsim = 20;
 Ts = 1e-4;
-IC = [0,deg2rad(1),0,0];
+params.IC = [0,deg2rad(1),0,0];
 model = 3; % 1: linear model       2: non linear model    3: Matlab fct non linear model
 input_select = [0,1];
 q2_f = deg2rad(10);
@@ -366,7 +366,7 @@ F = e*inv(Qc)*lambda;
 k0 = 20;
 phi = 0.5;
 q1_ref = 5; 
-IC = [0,deg2rad(10),0,0];
+params.IC = [0,deg2rad(10),0,0];
 q2_f = deg2rad(2);
 M = [plant_ss.A, plant_ss.B; F, 0];
 x_u_inf = M\[zeros(4,1); 1];
@@ -395,7 +395,7 @@ F = e*inv(Qc)*lambda;
 k0 = 50;
 phi = 0.5;
 q1_ref = 5; 
-IC = [0,deg2rad(10),0,0];
+params.IC = [0,deg2rad(10),0,0];
 q2_f = deg2rad(2);
 M = [plant_ss.A, plant_ss.B; F, 0];
 x_u_inf = M\[zeros(4,1); 1];
