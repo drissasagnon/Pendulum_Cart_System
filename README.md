@@ -28,6 +28,8 @@ The goal of the system is to stabilize the pendulum upright, keeping the swing a
  
 &#8195;&#8195;&#8195;[Loop shaping with PID controller](#TMP_6de2)
  
+&#8195;&#8195;&#8195;[Model validation](#TMP_83c4)
+ 
 &#8195;&#8195;&#8195;[State feedback control](#TMP_0e02)
  
 &#8195;&#8195;&#8195;[State feedback controller with cart position (q\_1) as output](#TMP_1364)
@@ -384,13 +386,158 @@ animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 
 
 ![figure_2.png](./README_media/figure_2.png)
 
-By using simulink blocks to model the non\-linear system, we encounter algebraic loops because ${\ddot{q} }_1$ requires  ${\ddot{q} }_2$ and vice\-versa. To solve that, we will use Matlab function block, to solve the following ode. 
+By using simulink blocks to model the non\-linear system, we encounter algebraic loops because ${\ddot{q} }_1$ requires  ${\ddot{q} }_2$ and vice\-versa. To solve that, we will use Matlab function block (src/pendulum\_cart\_nl.m), to solve the following ode. 
 
  $$ \left\lbrace \begin{array}{ll} \;\left(M+m\right)\ddot{\;q_1 } -m\;l\ddot{\;q_2 } \;\cos \left(q_2 \right)+m\;l\;{\dot{q_2 } }^2 \;\sin \left(q_2 \right)+k_1 \;\dot{\;q_1 }  & =u\newline -m\;l\;\ddot{\;q_1 } \;\cos \left(q_2 \right)+m\;l^{2\;} \ddot{\;q_2 } -m\;g\;l\;\sin \left(q_2 \right)+k_2 \;\dot{\;q_2 } \; & =0 \end{array}\;\;\;\;\;=\Rightarrow \left\lbrace \begin{array}{ll} \;\left(M+m\right)\ddot{\;q_1 } -m\;l\ddot{\;q_2 } \;\cos \left(q_2 \right) & =u-m\;l\;{\dot{q_2 } }^2 \;\sin \left(q_2 \right)-k_1 \;\dot{\;q_1 } \newline -m\;l\;\ddot{\;q_1 } \;\cos \left(q_2 \right)+m\;l^{2\;} \ddot{\;q_2 } \; & =m\;g\;l\;\sin \left(q_2 \right)-k_2 \;\dot{\;q_2 }  \end{array}\;\;\;\;\;\;\right.\right. $$ 
 
  $$ \left\lbrack \begin{array}{c} \ddot{\;q_1 } \newline \ddot{\;q_2 }  \end{array}\right\rbrack ={\left\lbrack \begin{array}{cccc} \left(M+m\right) & -m\;l\;\cos \left(q_2 \right)\newline -m\;l\;\cos \left(q_2 \right) & m\;l^{2\;}  \end{array}\right\rbrack }^{-1} \;\left\lbrack \begin{array}{c} \dot{\;u-m\;l\;{\dot{q_2 } }^2 \;\sin \left(q_2 \right)-k_1 \;\dot{\;q_1 } } \newline \dot{\;m\;g\;l\;\sin \left(q_2 \right)-k_2 \;\dot{\;q_2 } }  \end{array}\right\rbrack $$ 
 
+<a id="TMP_83c4"></a>
+
+### Model validation
+- **Open\-loop fall test**
+
 ```matlab
+run parameters.m
+x0 = [0; deg2rad(0.5); 0; 0];
+[t, x] = ode45(@(t,x) pendulum_cart_nl(x, 0, params), [0 50], x0);
+clf("reset")
+figure
+plot(t, rad2deg(x(:,2))); grid on; xlabel('t [s]'); ylabel('q_2 [deg]')
+```
+
+![figure_3.png](./README_media/figure_3.png)
+
+We can see that $q_2$ is near 0 at about 1s, and then starts swinging with more and more low amplitude around 180°. 
+
+- **linear vs nonlinear at small angle**
+
+```matlab
+
+
+plant = syst_repr_generator(params, 'q2');
+t  = linspace(0, 0.8, 801)';
+[~, ~, xl] = initial(plant, x0, t);
+[~, xn]    = ode45(@(t,x) pendulum_cart_nl(x, 0, params), t, x0);
+clf("reset")
+figure
+plot(t, rad2deg(xl(:,2)), t, rad2deg(xn(:,2)), '--'); 
+legend('linear', 'nonlinear'); xlabel('t [s]'); ylabel('q_2 [deg]')
+```
+
+![figure_4.png](./README_media/figure_4.png)
+
+```matlab
+relErr = abs(xn(end,2) - xl(end,2)) / abs(xl(end,2))
+```
+
+```matlabTextOutput
+relErr = 6.6129e-04
+```
+
+Linear and non\-linear q2 output perfectly overlay with a relative error nearly null. 
+
+- **Linear model (variant 1) vs block model (variant 2) vs MATLAB Function (variant 3)**
+
+```matlab
+run parameters.m
+```
+
+```matlabTextOutput
+Warning: Model 'mdl_with_PID' contains 1 algebraic loops. 
+Suggested Actions:
+    • Highlight and view information about the algebraic loops in the model using the Simulink.BlockDiagram.getAlgebraicLoops function. - Open
+    • Suppress this diagnostic by setting the 'Algebraic Loop' diagnostic parameter to 'none'. - Fix
+
+
+Found algebraic loop that contains: 
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum7
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum8
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Gain12
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Gain13
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Divide3
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum9
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum10
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Gain8
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Divide
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Gain9
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum (algebraic variable)
+maxDiff = 3.3429e-04
+```
+
+![figure_5.png](./README_media/figure_5.png)
+
+```matlab
+plant_ss = syst_repr_generator(params, 'q2');
+input_select = plant_ss.C(1:2);
+Tsim = 10;  Ts = 1e-4;  q2_f = deg2rad(-10);
+params.IC = [0, deg2rad(1), 0, 0];
+clf("reset")
+figure; hold on; grid on
+for model = 1:3                       % 1 linear, 2 blocks, 3 MATLAB Function
+    out = sim("mdl_with_PID");
+    X = states_from_log(x);
+    Xs{model} = X;
+    plot(x.Time, rad2deg(X(:,2)), 'DisplayName', "model " + model)
+
+
+end
+```
+
+```matlabTextOutput
+Warning: Model 'mdl_with_PID' contains 1 algebraic loops. 
+Suggested Actions:
+    • Highlight and view information about the algebraic loops in the model using the Simulink.BlockDiagram.getAlgebraicLoops function. - Open
+    • Suppress this diagnostic by setting the 'Algebraic Loop' diagnostic parameter to 'none'. - Fix
+
+
+Found algebraic loop that contains: 
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum7
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum8
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Gain12
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Gain13
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Divide3
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum9
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum10
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Gain8
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Divide
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Gain9
+mdl_with_PID/Variant Subsystem plant/Non-linear model/Subsystem Reference/Sum (algebraic variable)
+```
+
+```matlab
+
+
+
+
+maxDiff_2vs3 = max(abs(rad2deg(Xs{2}(:,2) - Xs{3}(:,2))))   
+```
+
+```matlabTextOutput
+maxDiff_2vs3 = 0.0192
+```
+
+```matlab
+maxDiff_1vs3 = max(abs(rad2deg(Xs{1}(:,2) - Xs{3}(:,2))))   
+```
+
+```matlabTextOutput
+maxDiff_1vs3 = 0.6567
+```
+
+```matlab
+legend; xlabel('t [s]'); ylabel('q_2 [deg]')
+```
+
+![figure_6.png](./README_media/figure_6.png)
+
+The nonlinear model was implemented twice: as a Simulink block diagram and as a MATLAB Function solving the mass\-matrix form of the Lagrange equations. Under the same PID scenario (q₂₀ = 1°, step to −10°), the two implementations differ by at most 0.019° over 10 s, which confirms both. The linear model differs from them by at most 0.66°, about 4% of the 17° peak, consistent with the small\-angle approximation at that amplitude.
+
+Getting back to PID control this time with MATLAB function based nonlinear model. 
+
+```matlab
+
+
 Tsim = 10;
 Ts = 1e-4;
 q2_f = deg2rad(-10);
@@ -402,10 +549,18 @@ sim("models/mdl_with_PID.slx");
 refs = {'q1_ref', 'q2_ref'};
 clf("reset")
 figure
-animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(input_select==1)), ref.Data*input_select')
+animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, ...
 ```
 
-![figure_3.png](./README_media/figure_3.png)
+![figure_7.png](./README_media/figure_7.png)
+
+```matlab
+    'fps', 100, string(refs(input_select==1)), ref.Data*input_select')
+
+
+
+
+```
 
 <a id="TMP_0e02"></a>
 
@@ -444,7 +599,7 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_4.png](./README_media/figure_4.png)
+![figure_8.png](./README_media/figure_8.png)
 
 ```matlab
 %animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(input_select==1)), ref.Data*input_select')
@@ -477,7 +632,7 @@ figure
 step(toy_system)
 ```
 
-![figure_5.png](./README_media/figure_5.png)
+![figure_9.png](./README_media/figure_9.png)
 
 ```matlab
 figure
@@ -501,7 +656,7 @@ compensator = 2
 step(compensator*toy_system)
 ```
 
-![figure_6.png](./README_media/figure_6.png)
+![figure_10.png](./README_media/figure_10.png)
 
 By default we will set $k_{\mathrm{s}\mathrm{c}\mathrm{a}\mathrm{l}\mathrm{e}} =\frac{1}{\mathrm{d}\mathrm{c}\mathrm{g}\mathrm{a}\mathrm{i}\mathrm{n}\left(\mathrm{c}\mathrm{l}\mathrm{o}\mathrm{s}\mathrm{e}\mathrm{d}\;\mathrm{l}\mathrm{o}\mathrm{o}\mathrm{p}\right)}$ 
 
@@ -550,7 +705,7 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_7.png](./README_media/figure_7.png)
+![figure_11.png](./README_media/figure_11.png)
 
 ```matlab
 Tsim = 10;
@@ -569,7 +724,7 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_8.png](./README_media/figure_8.png)
+![figure_12.png](./README_media/figure_12.png)
 
 <a id="TMP_3e49"></a>
 ### State feedback controller with swing angle (q\_2) as output 
@@ -655,7 +810,7 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_9.png](./README_media/figure_9.png)
+![figure_13.png](./README_media/figure_13.png)
 
 <a id="TMP_0d42"></a>
 <a id="TMP_8889"></a>
@@ -705,7 +860,7 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_10.png](./README_media/figure_10.png)
+![figure_14.png](./README_media/figure_14.png)
 
 <a id="TMP_5877"></a>
 
@@ -794,7 +949,7 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_11.png](./README_media/figure_11.png)
+![figure_15.png](./README_media/figure_15.png)
 
 <a id="TMP_1f8f"></a>
 
@@ -826,7 +981,6 @@ model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non lin
 sim('models/mdl_with_SMC.slx');
 refs = {'q1_ref', 'q2_ref'};
 
-
 clf("reset")
 figure;
 X = squeeze(x.Data);              
@@ -835,7 +989,7 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_12.png](./README_media/figure_12.png)
+![figure_16.png](./README_media/figure_16.png)
 
 ```matlab
 run parameters.m
@@ -868,7 +1022,7 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_13.png](./README_media/figure_13.png)
+![figure_17.png](./README_media/figure_17.png)
 
 <a id="TMP_944b"></a>
 
