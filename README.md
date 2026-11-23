@@ -1,52 +1,52 @@
-<a id="TMP_2b2e"></a>
-<a id="TMP_018b"></a>
+<a id="TMP_93ba"></a>
+<a id="TMP_62fe"></a>
 
 # Pendulum cart control
 
-the system consists of a cart of mass $M$ carrying a pendulum of mass $m$ through a mass\-less rod with a length $l$ . The cart displacement is driven by a horizontal force u.  
+The system consists of a cart of mass $M$ carrying a pendulum of mass $m$ through a mass\-less rod with a length $l$ . The cart displacement is driven by a horizontal force u.  
 
-![image_0.png](./main_media/image_0.png)
+![image_0.png](./README_media/image_0.png)
 
 The goal of the system is to stabilize the pendulum upright, keeping the swing angle q2 = 0 by controlling the displacement q1 of the car. 
 
 <!-- Begin Toc -->
 
 ## Table of Contents
-&#8195;&#8195;[1. Model of the system](#TMP_581a)
+&#8195;&#8195;[1. Model of the system](#TMP_1494)
  
-&#8195;&#8195;[2. Model linearization](#TMP_0cd0)
+&#8195;&#8195;[2. Model linearization](#TMP_5155)
  
-&#8195;&#8195;[3. Simulink Model of the system](#TMP_7943)
+&#8195;&#8195;[3. Simulink Model of the system](#TMP_0400)
  
-&#8195;&#8195;[4. System analysis](#TMP_843b)
+&#8195;&#8195;[4. System analysis](#TMP_9f18)
  
-&#8195;&#8195;&#8195;[Stability](#TMP_1d3f)
+&#8195;&#8195;&#8195;[Stability](#TMP_8702)
  
-&#8195;&#8195;&#8195;[Controllability and observability](#TMP_58cc)
+&#8195;&#8195;&#8195;[Controllability and observability](#TMP_560b)
  
-&#8195;&#8195;[5.Control](#TMP_1792)
+&#8195;&#8195;[5.Control](#TMP_21f9)
  
-&#8195;&#8195;&#8195;[Loop shaping with PID controller](#TMP_0ed9)
+&#8195;&#8195;&#8195;[Loop shaping with PID controller](#TMP_6de2)
  
-&#8195;&#8195;&#8195;[State feedback control](#TMP_3f46)
+&#8195;&#8195;&#8195;[State feedback control](#TMP_0e02)
  
-&#8195;&#8195;&#8195;[State feedback controller with cart position (q\_1) as output](#TMP_24d4)
+&#8195;&#8195;&#8195;[State feedback controller with cart position (q\_1) as output](#TMP_1364)
  
-&#8195;&#8195;&#8195;[State feedback controller with swing angle (q\_2) as output](#TMP_5939)
+&#8195;&#8195;&#8195;[State feedback controller with swing angle (q\_2) as output](#TMP_3e49)
  
-&#8195;&#8195;&#8195;[LQR state feedback control](#TMP_15e5)
+&#8195;&#8195;&#8195;[LQR state feedback control](#TMP_24bf)
  
-&#8195;&#8195;&#8195;[Observer based state feedback control](#TMP_7c39)
+&#8195;&#8195;&#8195;[Observer based state feedback control](#TMP_8889)
  
-&#8195;&#8195;&#8195;[LQR State feedback with integrale action](#TMP_1741)
+&#8195;&#8195;&#8195;[LQR State feedback with integrale action](#TMP_5877)
  
-&#8195;&#8195;&#8195;[Sliding mode control](#TMP_1223)
+&#8195;&#8195;&#8195;[Sliding mode control](#TMP_1f8f)
  
-&#8195;&#8195;&#8195;[RST control](#TMP_85e0)
+&#8195;&#8195;&#8195;[RST control](#TMP_944b)
  
 <!-- End Toc -->
 
-<a id="TMP_581a"></a>
+<a id="TMP_1494"></a>
 
 ## 1. Model of the system
 
@@ -104,7 +104,7 @@ The model of the system is given as
 
  $$ \left\lbrace \begin{array}{ll} \;\left(M+m\right)\ddot{\;q_1 } -m\;l\ddot{\;q_2 } \;\cos \left(q_2 \right)+m\;l\;{\dot{q_2 } }^2 \;\sin \left(q_2 \right)+k_1 \;\dot{\;q_1 }  & =u\newline -m\;l\;\ddot{\;q_1 } \;\cos \left(q_2 \right)+m\;l^{2\;} \ddot{\;q_2 } -m\;g\;l\;\sin \left(q_2 \right)+k_2 \;\dot{\;q_2 } \; & =0 \end{array}\right. $$ 
 
-<a id="TMP_0cd0"></a>
+<a id="TMP_5155"></a>
 
 ## 2. Model linearization
 
@@ -130,7 +130,7 @@ The model of the system is given as
 
  $$ \left\lbrack \begin{array}{c} \dot{\;q_1 } \newline \dot{\;q_2 } \newline \ddot{\;q_1 } \newline \ddot{\;q_2 }  \end{array}\right\rbrack =\left\lbrack \begin{array}{cccc} 0 & 0 & 1 & 0\newline 0 & 0 & 0 & 1\newline 0 & \frac{\;m\;g}{M\;} & -\frac{\;k_1 }{M} & -\frac{\;k_2 }{M\;l}\newline 0 & \frac{\;\left(M+m\right)g}{M\;l} & -\frac{\;k_1 }{M\;l} & -\frac{\left(M+m\right)\;k_2 }{M\;m\;l^2 } \end{array}\right\rbrack \left\lbrack \begin{array}{c} q_1 \newline q_2 \newline \dot{\;q_1 } \newline \dot{\;q_2 }  \end{array}\right\rbrack +\left\lbrack \begin{array}{c} 0\newline 0\newline \frac{\;1}{M\;}\newline \frac{1}{M\;l} \end{array}\right\rbrack u $$ 
 
-<a id="TMP_7943"></a>
+<a id="TMP_0400"></a>
 
 ## 3. Simulink Model of the system
 
@@ -188,17 +188,17 @@ Continuous-time zero/pole/gain model.
 Model Properties
 ```
 
-![image_1.png](./main_media/image_1.png)
+![image_1.png](./README_media/image_1.png)
 
-![image_2.png](./main_media/image_2.png)
+![image_2.png](./README_media/image_2.png)
 
-<a id="TMP_843b"></a>
+<a id="TMP_9f18"></a>
 
 ## 4. System analysis
-<a id="TMP_8c22"></a>
+<a id="TMP_3f67"></a>
  
 
-<a id="TMP_1d3f"></a>
+<a id="TMP_8702"></a>
 
 ### Stability
 
@@ -239,16 +239,16 @@ The system is unstable because the second pole of the system is a real positive.
 
 The only one zero of the system is negative making the system minimum phase.
 
-<a id="TMP_5c8b"></a>
+<a id="TMP_963b"></a>
 ```matlab
 
 
 rlocus(plant_ss)
 ```
 
-![figure_0.png](./main_media/figure_0.png)
+![figure_0.png](./README_media/figure_0.png)
 
-![figure_1.png](./main_media/figure_1.png)
+![figure_1.png](./README_media/figure_1.png)
 
  $$ O\;L\;\left(s\right)=\frac{N}{D}\;\;\;;P\;\mathrm{ctrl}\;;\Rightarrow C\;L\;\left(s\right)=\frac{P\;N}{D+P\;N\;\;} $$ 
 
@@ -256,8 +256,8 @@ From the root locus we can conclude that a finite P controller only cannot stabi
 
 Thus a solution of control is to design a controller that take into account integral, derivative and proportional effects through loop shaping. 
 
-<a id="TMP_6ef6"></a>
-<a id="TMP_58cc"></a>
+<a id="TMP_794e"></a>
+<a id="TMP_560b"></a>
 
 ### Controllability and observability
 
@@ -330,16 +330,16 @@ Model Properties
 
 By diagonalizing the LTI model, we can directly see that all the state are controllable as B matrix is full. 
 
-<a id="TMP_1792"></a>
+<a id="TMP_21f9"></a>
 
 ## 5.Control 
-<a id="TMP_0ed9"></a>
+<a id="TMP_6de2"></a>
 
 ### Loop shaping with PID controller
 
 In this section simulink Control System Designer tool is used to tune a PID controller that stabilize the pendulum. 
 
-![image_3.png](./main_media/image_3.png)
+![image_3.png](./README_media/image_3.png)
 
 For the simulation $q_{20} =10°$ 
 
@@ -382,7 +382,7 @@ figure(n);
 animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(input_select==1)), ref.Data*input_select')
 ```
 
-![figure_2.png](./main_media/figure_2.png)
+![figure_2.png](./README_media/figure_2.png)
 
 By using simulink blocks to model the non\-linear system, we encounter algebraic loops because ${\ddot{q} }_1$ requires  ${\ddot{q} }_2$ and vice\-versa. To solve that, we will use Matlab function block, to solve the following ode. 
 
@@ -405,9 +405,9 @@ figure
 animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(input_select==1)), ref.Data*input_select')
 ```
 
-![figure_3.png](./main_media/figure_3.png)
+![figure_3.png](./README_media/figure_3.png)
 
-<a id="TMP_3f46"></a>
+<a id="TMP_0e02"></a>
 
 ### State feedback control
 
@@ -415,7 +415,7 @@ This control law is expressed as $u=-Kx+k_{\mathrm{s}\mathrm{c}\mathrm{a}\mathrm
 
 Classical state feedback controller is only applicable to SISO system, so we have to choose one of the two possible outputs
 
-<a id="TMP_24d4"></a>
+<a id="TMP_1364"></a>
 ### State feedback controller with cart position (q\_1) as output 
 
 By default we will set $k_{\mathrm{s}\mathrm{c}\mathrm{a}\mathrm{l}\mathrm{e}} =1$ 
@@ -428,7 +428,7 @@ K = acker(plant_ss.A,plant_ss.B, poles_des);
 Tsim = 20;
 Ts = 1e-4;
 q2_f = deg2rad(10);
-IC = [0,deg2rad(20),0,0];
+params.IC = [0,deg2rad(20),0,0];
 model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 k_scale = 1;
 input_select = plant_ss.C(1:2);
@@ -444,7 +444,7 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_4.png](./main_media/figure_4.png)
+![figure_4.png](./README_media/figure_4.png)
 
 ```matlab
 %animate_pendulum_cart(x.Time, x.Data(:,1), x.Data(:,2), u.Data,  params, 'fps', 100, string(refs(input_select==1)), ref.Data*input_select')
@@ -477,7 +477,7 @@ figure
 step(toy_system)
 ```
 
-![figure_5.png](./main_media/figure_5.png)
+![figure_5.png](./README_media/figure_5.png)
 
 ```matlab
 figure
@@ -501,7 +501,7 @@ compensator = 2
 step(compensator*toy_system)
 ```
 
-![figure_6.png](./main_media/figure_6.png)
+![figure_6.png](./README_media/figure_6.png)
 
 By default we will set $k_{\mathrm{s}\mathrm{c}\mathrm{a}\mathrm{l}\mathrm{e}} =\frac{1}{\mathrm{d}\mathrm{c}\mathrm{g}\mathrm{a}\mathrm{i}\mathrm{n}\left(\mathrm{c}\mathrm{l}\mathrm{o}\mathrm{s}\mathrm{e}\mathrm{d}\;\mathrm{l}\mathrm{o}\mathrm{o}\mathrm{p}\right)}$ 
 
@@ -550,13 +550,13 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_7.png](./main_media/figure_7.png)
+![figure_7.png](./README_media/figure_7.png)
 
 ```matlab
 Tsim = 10;
 Ts = 1e-4;
 q2_f = deg2rad(20);
-IC = [0,deg2rad(20),0,0];
+params.IC = [0,deg2rad(20),0,0];
 model = 3; % 1 : linear model       2: non linear model
 input_select = plant_ss.C(1:2);
 sim('models/mdl_with_State_Feedback.slx');
@@ -569,9 +569,9 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_8.png](./main_media/figure_8.png)
+![figure_8.png](./README_media/figure_8.png)
 
-<a id="TMP_5939"></a>
+<a id="TMP_3e49"></a>
 ### State feedback controller with swing angle (q\_2) as output 
 
 Taking $q_2$ as output of the system reveals one of the implication of non observability show above. Actually, state feedback control only changes system's poles (the denominator of the the transfer function). Looking closely to the transfer function's numerator when $q_2$ is the output, we notice that $b_0 =-1\ldotp 866e-16\approx 0$, which result in $\mathrm{dcgain}=\frac{b_0 }{a_0 }\;$ being null and an infinite compensator $k_{\mathrm{scale}} =\infty$ 
@@ -584,7 +584,7 @@ K = acker(plant_ss.A,plant_ss.B, poles_des);
 Tsim = 20;
 Ts = 1e-4;
 q2_f = deg2rad(20);
-IC = [0,deg2rad(20),0,0];
+params.IC = [0,deg2rad(20),0,0];
 model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 
 
@@ -621,7 +621,7 @@ k_scale = 1/dcg
 k_scale = Inf
 ```
 
-<a id="TMP_15e5"></a>
+<a id="TMP_24bf"></a>
 
 ### LQR state feedback control
 
@@ -640,7 +640,7 @@ k_scale = 1/dcg;
 Tsim = 20;
 Ts = 1e-4;
 q2_f = deg2rad(10);
-IC = [0,deg2rad(10),0,0];
+params.IC = [0,deg2rad(10),0,0];
 model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 
 
@@ -655,10 +655,10 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_9.png](./main_media/figure_9.png)
+![figure_9.png](./README_media/figure_9.png)
 
-<a id="TMP_9622"></a>
-<a id="TMP_7c39"></a>
+<a id="TMP_0d42"></a>
+<a id="TMP_8889"></a>
 
 ### Observer based state feedback control
 
@@ -682,7 +682,7 @@ K = acker(plant_ss.A,plant_ss.B, poles_des);
 Tsim = 20;
 Ts = 1e-5;
 q2_f = deg2rad(20);
-IC = [0,deg2rad(20),0,0];
+params.IC = [0,deg2rad(20),0,0];
 model = 3; % 1 : linear model       2: non linear model    3: Matlab fct non linear model
 
 
@@ -705,9 +705,9 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_10.png](./main_media/figure_10.png)
+![figure_10.png](./README_media/figure_10.png)
 
-<a id="TMP_1741"></a>
+<a id="TMP_5877"></a>
 
 ### LQR State feedback with integrale action
 
@@ -781,7 +781,7 @@ ans = 5x1 complex
 
 Tsim = 20;
 Ts = 1e-4;
-IC = [0,deg2rad(1),0,0];
+params.IC = [0,deg2rad(1),0,0];
 model = 3; % 1: linear model       2: non linear model    3: Matlab fct non linear model
 input_select = [0,1];
 q2_f = deg2rad(10);
@@ -794,9 +794,9 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_11.png](./main_media/figure_11.png)
+![figure_11.png](./README_media/figure_11.png)
 
-<a id="TMP_1223"></a>
+<a id="TMP_1f8f"></a>
 
 ### Sliding mode control
 
@@ -813,7 +813,7 @@ F = e*inv(Qc)*lambda;
 k0 = 20;
 phi = 0.5;
 q1_ref = 5; 
-IC = [0,deg2rad(10),0,0];
+params.IC = [0,deg2rad(10),0,0];
 q2_f = deg2rad(2);
 M = [plant_ss.A, plant_ss.B; F, 0];
 x_u_inf = M[zeros(4,1); 1];
@@ -835,7 +835,7 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_12.png](./main_media/figure_12.png)
+![figure_12.png](./README_media/figure_12.png)
 
 ```matlab
 run parameters.m
@@ -848,7 +848,7 @@ F = e*inv(Qc)*lambda;
 k0 = 50;
 phi = 0.5;
 q1_ref = 5; 
-IC = [0,deg2rad(10),0,0];
+params.IC = [0,deg2rad(10),0,0];
 q2_f = deg2rad(2);
 M = [plant_ss.A, plant_ss.B; F, 0];
 x_u_inf = M[zeros(4,1); 1];
@@ -868,15 +868,49 @@ animate_pendulum_cart(x.Time, X(:,1), X(:,2), u.Data, params, 'fps', 100, ...
     string(refs(input_select==1)), ref.Data*input_select');
 ```
 
-![figure_13.png](./main_media/figure_13.png)
+![figure_13.png](./README_media/figure_13.png)
 
-<a id="TMP_85e0"></a>
+<a id="TMP_944b"></a>
 
 ### RST control
 
 ```matlab
 Ts = 1e-4
-discrete_syst, discrete_b = c2dm(plant_ss.A, plant_ss.B, plant_ss.C, plant_ss.D, Ts, "tustin")
+```
 
+```matlabTextOutput
+Ts = 1.0000e-04
+```
 
+```matlab
+discrete_syst = c2d(plant_ss, Ts, "tustin")
+```
+
+```matlabTextOutput
+discrete_syst = 
+  A = 
+               x1          x2          x3          x4
+   x1           1   1.635e-08      0.0001  -3.252e-11
+   x2           0           1  -3.333e-11      0.0001
+   x3           0    0.000327           1  -6.503e-07
+   x4           0    0.001308  -6.667e-07           1
+ 
+  B = 
+              u1
+   x1  3.333e-09
+   x2  3.333e-09
+   x3  6.667e-05
+   x4  6.667e-05
+ 
+  C = 
+               x1          x2          x3          x4
+   y1           1   8.175e-09       5e-05  -1.626e-11
+ 
+  D = 
+              u1
+   y1  1.667e-09
+ 
+Sample time: 0.0001 seconds
+Discrete-time state-space model.
+Model Properties
 ```
