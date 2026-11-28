@@ -1,0 +1,17 @@
+# MATLAB / Simulink generated files
+*.asv
+*.m~
+*.autosave
+*.original
+*.r20*
+*.slxc
+slprj/
+codegen/
+*_grt_rtw/
+*_ert_rtw/
+*.mex*
+html/
+
+# OS files
+.DS_Store
+Thumbs.db
